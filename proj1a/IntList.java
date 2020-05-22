@@ -15,7 +15,7 @@ public class IntList {
     }
 
     public int get(int i) {
-        if(i == 0) {
+        if (i == 0) {
             return first;
         }
         return this.rest.get(i - 1);
@@ -58,7 +58,7 @@ public class IntList {
      * each element incremented by x. Not allowed to use
      * the 'new' keyword. */
     public static IntList dincrList(IntList L, int x) {
-        if(L == null) {
+        if (L == null) {
             return L;
         }
         L.first = L.first + x;
@@ -73,7 +73,7 @@ public class IntList {
     }
 
     public static IntList square(IntList L) {
-        if(L == null) {
+        if (L == null) {
             return L;
         }
         IntList rest = square(L.rest);
@@ -82,7 +82,7 @@ public class IntList {
     }
 
     public static IntList squareDestructive(IntList L) {
-        if(L == null) {
+        if (L == null) {
             return L;
         }
         L.first = L.first * L.first;

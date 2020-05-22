@@ -7,7 +7,7 @@ public class ArrayDeque<T> {
     private int nextFirst;
     private int nextLast;
 
-    public ArrayDeque(){
+    public ArrayDeque() {
         items = (T []) new Object[8];
         size = 0;
         nextFirst = 3;
@@ -20,25 +20,25 @@ public class ArrayDeque<T> {
      * 会在add，remove中帮助改变头尾指针位置
      */
 
-    private int plusOne(int index){
+    private int plusOne(int index) {
         return (index + 1) % items.length;
     }
-    private int minusOne(int index){
+    private int minusOne(int index) {
         return (index - 1 + items.length) % items.length;
     }
 
     /**return the size of array*/
-    public int size(){
+    public int size() {
         return size;
     }
 
     /**check if the array is empty*/
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size == 0;
     }
 
-    public void addFirst(T item){
-        if (size == items.length){
+    public void addFirst(T item) {
+        if (size == items.length) {
             resize(items.length * 2);
         }
         items[nextFirst] = item;
@@ -46,7 +46,7 @@ public class ArrayDeque<T> {
         size += 1;
     }
 
-    public void addLast(T item){
+    public void addLast(T item) {
         if (size == items.length){
             resize(items.length * 2);
         }
@@ -56,14 +56,14 @@ public class ArrayDeque<T> {
     }
 
     /**enlarge/shorten the size of array*/
-    private void resize(int range){
+    private void resize(int range) {
         T[] newItems = (T []) new Object [range];
         /**
          * 对于circular array，从nextFirst的后一位（plusOne()）开始, 依次往后的元素顺序即为array正序
          * 同理，从nextLast的前一位（minusOne()）开始，依次往前的元素顺序即为array倒序
          */
         int oldIndex = plusOne(nextFirst);
-        for (int newIndex = 0; newIndex < size; newIndex ++){
+        for (int newIndex = 0; newIndex < size; newIndex ++) {
             newItems[newIndex] = items[oldIndex];
             oldIndex = plusOne(oldIndex);
         }
@@ -78,14 +78,14 @@ public class ArrayDeque<T> {
     }
 
     /**检查array是否存在过多空元素，如果是，减小array容量*/
-    private void reduceSize(){
+    private void reduceSize() {
         if (items.length > 3 * size){
             resize(items.length / 2);
         }
     }
 
-    public T removeFirst(){
-        if (isEmpty()){
+    public T removeFirst() {
+        if (isEmpty()) {
             return null;
         }
         /**
@@ -105,8 +105,8 @@ public class ArrayDeque<T> {
         return tmp;
     }
 
-    public T removeLast(){
-        if (isEmpty()){
+    public T removeLast() {
+        if (isEmpty()) {
             return null;
         }
         int last = minusOne(nextLast);      //去掉一个尾元素，nextLast前移一位
@@ -121,18 +121,18 @@ public class ArrayDeque<T> {
     }
 
     /**print array*/
-    public void printDeque(){
-        if (isEmpty()){
+    public void printDeque() {
+        if (isEmpty()) {
             System.out.print("Empty Array!");
         }
         int index = 0;
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i ++) {
             index = plusOne(nextFirst);
             System.out.print(items[index] + " ");
         }
     }
 
-    public T get(int index){
+    public T get(int index) {
         return items[(nextFirst + 1 + index) % items.length];
     }
 
