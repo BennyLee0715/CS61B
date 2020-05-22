@@ -1,11 +1,11 @@
 public class LinkedListDeque<T>{
-    public class IntNode{
+    private class IntNode{
         /**
          * Use Doubly Linked List (head to last & last to head)
          */
-        public T item;
-        public IntNode next;
-        public IntNode prev;
+        private T item;
+        private IntNode next;
+        private IntNode prev;
 
         public IntNode(T i, IntNode n, IntNode p){
             item = i;
@@ -14,8 +14,8 @@ public class LinkedListDeque<T>{
         }
     }
 
-    public IntNode sentinel;
-    public int size;
+    private IntNode sentinel;
+    private int size;
 
     /**
      * create a null IntNode

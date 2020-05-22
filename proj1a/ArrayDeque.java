@@ -1,96 +1,144 @@
 public class ArrayDeque<T> {
-    public T[] items;
-    public int size;
+    private T[] items;
+    private int size;
     /**
      * 使用circular array, 规定添加头尾元素的位置(头尾指针)
      */
-    public int nextFirst;
-    public int nextLast;
+    private int nextFirst;
+    private int nextLast;
 
     public ArrayDeque(){
         items = (T []) new Object[8];
         size = 0;
-        nextFirst = 7;
-        nextLast = 0;
+        nextFirst = 3;
+        nextLast = 4;
     }
 
-    public T get(int index){
-        return items[index];
+    /**
+     * helper，因为使用的是circular array，当头尾指针到达两端并继续增加时，指针会换到array另一边
+     * 这两个helper帮助统一上述指针达到端点和不在端点时的 +1 方法
+     * 会在add，remove中帮助改变头尾指针位置
+     */
+
+    private int plusOne(int index){
+        return (index + 1) % items.length;
+    }
+    private int minusOne(int index){
+        return (index - 1 + items.length) % items.length;
     }
 
+    /**return the size of array*/
     public int size(){
         return size;
     }
 
-    public void printDeque(){
-        for (T item : items){
-            System.out.print(item + " ");
-        }
-    }
-
+    /**check if the array is empty*/
     public boolean isEmpty(){
         return size == 0;
     }
 
     public void addFirst(T item){
-        /**环形数组，头指针循环到尾部*/
-        if (nextFirst == -1){
-            nextFirst = items.length - 1;
-        }
-        /**头尾指针相同时，说明数组除了该index处无元素，其他位置已满，需要扩大数组*/
-        if (nextFirst == nextLast){
+        if (size == items.length){
             resize();
         }
         items[nextFirst] = item;
-        nextFirst -= 1;
+        nextFirst = minusOne(nextFirst);    //加一个头元素，nextFirst前移一位
         size += 1;
     }
 
     public void addLast(T item){
-        /**环形数组，尾指针循环到头部*/
-        if (nextLast == items.length){
-            nextLast = 0;
-        }
-        if (nextFirst == nextLast){
+        if (size == items.length){
             resize();
         }
         items[nextLast] = item;
-        nextFirst += 1;
+        nextLast = plusOne(nextLast);   //加一个尾元素，nextLast后移一位
         size += 1;
     }
 
-    public void resize(){
+    /**enlarge the size of array*/
+    private void resize(){
         T[] newItems = (T []) new Object [items.length * 2];
-        /**先拷贝头尾指针指向位置的前面的数组部分到新数组的最前面*/
-        System.arraycopy(items, 0, newItems, 0, nextFirst + 1);
         /**
-         * 再拷贝头尾指针指向位置的后面的数组部分到新数组最后
-         * 这里要判断nextFirst是否指向数组尾端，因为拷贝是从nextFirst往后一个index开始拷贝的
-         * 而前面你第一次拷贝中拷贝起点都是0，所以不用有前提判断条件
+         * 对于circular array，从nextFirst的后一位（plusOne()）开始, 依次往后的元素顺序即为array正序
+         * 同理，从nextLast的前一位（minusOne()）开始，依次往前的元素顺序即为array倒序
          */
-        if(nextFirst != items.length - 1) {
-            System.arraycopy(items, nextFirst + 1, newItems, items.length + nextFirst + 1, items.length - nextFirst - 1);
+        int oldIndex = plusOne(nextFirst);
+        for (int newIndex = 0; newIndex < size; newIndex ++){
+            newItems[newIndex] = items[oldIndex];
+            oldIndex = plusOne(oldIndex);
         }
+        /**
+         * 这里的原array是从新array的第一个元素开始填入新array的
+         * nextFirst变为新array最后一个元素位置
+         * nextLast为填入的最后一个元素后一个位置
+         */
+        nextFirst = newItems.length - 1;
+        nextLast = size;
+        items = newItems;
     }
 
     public T removeFirst(){
         if (isEmpty()){
             return null;
         }
-        T extra = items[nextFirst + 1];
-        items[nextFirst + 1] = null;
-        nextFirst += 1;
-        return extra;
+        /**
+         * nextFirst 永远指向下一个元素的加入位置
+         * 这里nextFirst指针后移一个指向的是此时array中存在的第一个元素
+         * remove该元素
+         * nextFirst后移一位
+         */
+        int first = plusOne(nextFirst);     //去掉一个头元素，nextFirst后移一位
+        T tmp = items[first];
+        items[first] = null;
+        nextFirst = first;
+        size -= 1;
+        return tmp;
     }
 
     public T removeLast(){
         if (isEmpty()){
             return null;
         }
-        T extra = items[nextLast - 1];
-        items[nextLast - 1] = null;
-        nextLast -= 1;
-        return extra;
+        int last = minusOne(nextLast);      //去掉一个尾元素，nextLast前移一位
+        T tmp = items[last];
+        items[last] = null;
+        nextLast = last;
+        size -= 1;
+        return tmp;
     }
 
+    /**print array*/
+    public void printDeque(){
+        if (isEmpty()){
+            System.out.print("Empty Array!");
+        }
+        int index = 0;
+        for (int i = 0; i < size; i++){
+            index = plusOne(nextFirst);
+            System.out.print(items[index] + " ");
+        }
+    }
+
+    public T get(int index){
+        return items[nextFirst + 1 + index % items.length];
+    }
+
+//        public static void main(String[]args){
+//        ArrayDeque a = new ArrayDeque<>();
+//        a.addFirst(3);
+//        a.addFirst(2);
+////        System.out.println(a.isEmpty());
+//        a.addFirst(1);
+////        a.addFirst(7);
+////        a.addFirst(6);
+//        a.addLast(4);
+//        a.addLast(5);
+//        a.addLast(6);
+//        a.addLast(7);
+////        a.printDeque();
+////        System.out.println("\n" + a.size());
+////        a.removeFirst();
+////        a.removeLast();
+//        System.out.println(a.get(1));
+//    }
 }
