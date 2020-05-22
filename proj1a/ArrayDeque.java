@@ -99,7 +99,9 @@ public class ArrayDeque<T> {
         items[first] = null;
         nextFirst = first;
         size -= 1;
-        reduceSize();
+        if (size != 0) {
+            reduceSize();
+        }
         return tmp;
     }
 
@@ -112,7 +114,9 @@ public class ArrayDeque<T> {
         items[last] = null;
         nextLast = last;
         size -= 1;
-        reduceSize();
+        if (size != 0) {
+            reduceSize();
+        }
         return tmp;
     }
 
