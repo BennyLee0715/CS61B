@@ -107,7 +107,7 @@ public class LinkedListDeque<T>{
      *     使用recursion来获得相应index的item
      *     需要一个getRecursiveHelp子方法
      */
-    public T getRecursiveHelp(IntNode a, int i){
+    private T getRecursiveHelp(IntNode a, int i){
         if (i == 0){
             return a.item;
         }

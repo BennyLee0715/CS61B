@@ -39,7 +39,7 @@ public class ArrayDeque<T> {
 
     public void addFirst(T item){
         if (size == items.length){
-            resize();
+            resize(items.length * 2);
         }
         items[nextFirst] = item;
         nextFirst = minusOne(nextFirst);    //加一个头元素，nextFirst前移一位
@@ -48,16 +48,16 @@ public class ArrayDeque<T> {
 
     public void addLast(T item){
         if (size == items.length){
-            resize();
+            resize(items.length * 2);
         }
         items[nextLast] = item;
         nextLast = plusOne(nextLast);   //加一个尾元素，nextLast后移一位
         size += 1;
     }
 
-    /**enlarge the size of array*/
-    private void resize(){
-        T[] newItems = (T []) new Object [items.length * 2];
+    /**enlarge/shorten the size of array*/
+    private void resize(int range){
+        T[] newItems = (T []) new Object [range];
         /**
          * 对于circular array，从nextFirst的后一位（plusOne()）开始, 依次往后的元素顺序即为array正序
          * 同理，从nextLast的前一位（minusOne()）开始，依次往前的元素顺序即为array倒序
@@ -77,6 +77,13 @@ public class ArrayDeque<T> {
         items = newItems;
     }
 
+    /**检查array是否存在过多空元素，如果是，减小array容量*/
+    private void reduceSize(){
+        if (items.length > 3 * size){
+            resize(items.length / 2);
+        }
+    }
+
     public T removeFirst(){
         if (isEmpty()){
             return null;
@@ -92,6 +99,7 @@ public class ArrayDeque<T> {
         items[first] = null;
         nextFirst = first;
         size -= 1;
+        reduceSize();
         return tmp;
     }
 
@@ -104,6 +112,7 @@ public class ArrayDeque<T> {
         items[last] = null;
         nextLast = last;
         size -= 1;
+        reduceSize();
         return tmp;
     }
 
@@ -120,8 +129,10 @@ public class ArrayDeque<T> {
     }
 
     public T get(int index){
-        return items[nextFirst + 1 + index % items.length];
+        return items[(nextFirst + 1 + index) % items.length];
     }
+
+
 
 //        public static void main(String[]args){
 //        ArrayDeque a = new ArrayDeque<>();
