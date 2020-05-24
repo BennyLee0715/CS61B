@@ -1,5 +1,5 @@
-public class LinkedListDeque<T>{
-    private class IntNode{
+public class LinkedListDeque<T> {
+    private class IntNode {
         /**
          * Use Doubly Linked List (head to last & last to head)
          */
@@ -63,7 +63,7 @@ public class LinkedListDeque<T>{
     /**打印链表*/
     public void printDeque() {
         IntNode i = sentinel.next;
-        for (int j = 0; j <size(); j ++) {
+        for (int j = 0; j < size(); j++) {
             System.out.print(i.item + " ");
             i = i.next;
         }
@@ -97,7 +97,7 @@ public class LinkedListDeque<T>{
             return null;
         }
         IntNode j = sentinel;
-        for (int i = 0; i <= index; i ++) {
+        for (int i = 0; i <= index; i++) {
             j = j.next;
         }
         return j.item;
@@ -108,12 +108,12 @@ public class LinkedListDeque<T>{
      *     需要一个getRecursiveHelp子方法
      */
     private T getRecursiveHelp(IntNode a, int i) {
-        if (i == 0){
+        if (i == 0) {
             return a.item;
         }
-        else{
+        else {
             a = a.next;
-            i --;
+            i--;
         }
         return getRecursiveHelp(a, i);
     }

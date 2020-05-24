@@ -47,7 +47,7 @@ public class ArrayDeque<T> {
     }
 
     public void addLast(T item) {
-        if (size == items.length){
+        if (size == items.length) {
             resize(items.length * 2);
         }
         items[nextLast] = item;
@@ -63,7 +63,7 @@ public class ArrayDeque<T> {
          * 同理，从nextLast的前一位（minusOne()）开始，依次往前的元素顺序即为array倒序
          */
         int oldIndex = plusOne(nextFirst);
-        for (int newIndex = 0; newIndex < size; newIndex ++) {
+        for (int newIndex = 0; newIndex < size; newIndex++) {
             newItems[newIndex] = items[oldIndex];
             oldIndex = plusOne(oldIndex);
         }
@@ -79,7 +79,7 @@ public class ArrayDeque<T> {
 
     /**检查array是否存在过多空元素，如果是，减小array容量*/
     private void reduceSize() {
-        if (items.length > 3 * size){
+        if (items.length > 3 * size) {
             resize(items.length / 2);
         }
     }
@@ -126,7 +126,7 @@ public class ArrayDeque<T> {
             System.out.print("Empty Array!");
         }
         int index = 0;
-        for (int i = 0; i < size; i ++) {
+        for (int i = 0; i < size; i++) {
             index = plusOne(nextFirst);
             System.out.print(items[index] + " ");
         }
