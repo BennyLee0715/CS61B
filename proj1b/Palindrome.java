@@ -26,7 +26,7 @@ public class Palindrome {
         if (wordList.size() <= 1) {
             return true;
         }
-        if (cc.equalChars(wordList.removeFirst(), wordList.removeLast()) != true){
+        if (!cc.equalChars(wordList.removeFirst(), wordList.removeLast())) {
             return false;
         }
         return isPalindrome(wordList, cc);

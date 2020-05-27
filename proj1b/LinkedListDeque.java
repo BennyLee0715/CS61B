@@ -1,4 +1,4 @@
-public class LinkedListDeque<T> implements Deque<T>{
+public class LinkedListDeque<T> implements Deque<T> {
     private class IntNode {
         /**
          * Use Doubly Linked List (head to last & last to head)
