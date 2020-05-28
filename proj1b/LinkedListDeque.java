@@ -110,8 +110,7 @@ public class LinkedListDeque<T> implements Deque<T> {
     private T getRecursiveHelp(IntNode a, int i) {
         if (i == 0) {
             return a.item;
-        }
-        else {
+        } else {
             a = a.next;
             i--;
         }
